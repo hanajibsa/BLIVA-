@@ -5,6 +5,7 @@ from typing import Iterable
 from torch.utils.data import Dataset
 from collections import Counter
 from PIL import Image
+import numpy as np
 
 from daiv.datasets.datasets.base_dataset import BaseDataset_H
 
@@ -111,9 +112,13 @@ class HEURISTICDataset(BaseDataset_H):
         # load image 
         iid = int(data['image_id'])
         image_filename = f"train2014/COCO_train2014_{iid:012d}.jpg"
-        image_path = os.path.join(self.vis_root, image_filename)
-        image = Image.open(image_path).convert("RGB")
-        image = self.vis_processor(image)
+        # image_path = os.path.join(self.vis_root, image_filename)
+        # image = Image.open(image_path).convert("RGB")
+        # image = self.vis_processor(image)
+        feat_path = os.path.join(self.vis_root, image_filename)
+        feats = np.load(feat_path)['x']
+        assert feats.shape == (16, 16, 4096)
+        feats = feats.reshape(-1, 4096)
 
         # text_input: answer heuristic
         question = self.text_processor(data['question'])
@@ -127,7 +132,8 @@ class HEURISTICDataset(BaseDataset_H):
         text_output = data['most_answer']
 
         return {
-            "image": image,
+            # "image": image,
+            "feats": feats,
             "text_input": text_input,
             "text_output": text_output,
             # 'weights':answer_weight
@@ -257,9 +263,13 @@ class HEURISTICEvalCDataset(BaseDataset_H):
         # load image 
         iid = int(data['image_id'])
         image_filename = f"val2014/COCO_val2014_{iid:012d}.jpg"
-        image_path = os.path.join(self.vis_root, image_filename)
-        image = Image.open(image_path).convert("RGB")
-        image = self.vis_processor(image)
+        # image_path = os.path.join(self.vis_root, image_filename)
+        # image = Image.open(image_path).convert("RGB")
+        # image = self.vis_processor(image)
+        feat_path = os.path.join(self.vis_root, image_filename)
+        feats = np.load(feat_path)['x']
+        assert feats.shape == (16, 16, 4096)
+        feats = feats.reshape(-1, 4096)
 
         # text_input: answer heuristic
         question = self.text_processor(data['question'])
@@ -276,7 +286,8 @@ class HEURISTICEvalCDataset(BaseDataset_H):
         question_id = data['question_id']
 
         return {
-            "image": image,
+            # "image": image,
+            "feats": feats,
             "text_input": text_input,
             "text_output": text_output,
             # 'weights':answer_weight
