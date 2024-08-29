@@ -8,12 +8,12 @@ model:
   model_type: flant5xl
   load_pretrained: True
   # intialize stage 2 pretraining from stage 1 pretrained model
-  pretrained: "/root/workspace/24s-VQA-MLLM/EunJuPark/Training/BLIVA/daiv/output/BLIP2/Pretrain_stage1/20240725044/checkpoint_9.pth"
+  # pretrained: "/root/workspace/24s-VQA-MLLM/EunJuPark/Training/BLIVA/daiv/output/BLIP2/Pretrain_stage1/20240725044/checkpoint_9.pth"
   # pretrained: "/root/workspace/24s-VQA-MLLM/EunJuPark/mcan_stage1_checkpoint_9.pth" #"/home/intern24/daiv/BLIVA/daiv/output/BLIP2/Pretrain_stage1/mcan_stage1_checkpoint_9.pth"
   freeze_vit: True
 
 datasets:
-  heuristic_vqa:
+  ok_vqa:
     vis_processor:
         train:
           name: "blip2_image_train"

@@ -125,6 +125,8 @@ class Blip2T5Instruct(Blip2Base):
         with self.maybe_autocast():
             image_embeds = self.ln_vision(self.visual_encoder(image))
         image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(image.device)
+        # print('image_embeds:', image_embeds.shape) #[bs, 257, 1408]
+        # print('text input:', samples["text_input"])
 
         query_tokens = self.query_tokens.expand(image_embeds.shape[0], -1, -1)
         if self.qformer_text_input:
@@ -146,6 +148,7 @@ class Blip2T5Instruct(Blip2Base):
                 encoder_attention_mask=image_atts,
                 return_dict=True,
             )
+            # print('query_output:', query_output)
         else:
             query_output = self.Qformer.bert(
                 query_embeds=query_tokens,

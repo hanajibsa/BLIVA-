@@ -23,7 +23,7 @@ from daiv.common.registry import registry
 from daiv.models.blip2 import Blip2Base, disabled_train
 
 import os
-os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+# os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 
 @registry.register_model("blip2_vicuna_instruct_ori")
 class Blip2VicunaInstruct(Blip2Base):
@@ -157,6 +157,7 @@ class Blip2VicunaInstruct(Blip2Base):
         with self.maybe_autocast():
             image_embeds = self.ln_vision(self.visual_encoder(image))
         image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(image.device)
+        # print('image_atts:', image_atts.shape)
 
         bs = image.size(0)
 
@@ -180,6 +181,7 @@ class Blip2VicunaInstruct(Blip2Base):
                 encoder_attention_mask=image_atts,
                 return_dict=True,
             )
+            # print('query_output:', query_output.shape)
         else:
             query_output = self.Qformer.bert(
                 query_embeds=query_tokens,
