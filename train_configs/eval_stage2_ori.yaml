@@ -4,15 +4,15 @@
  # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 
 model:
-  arch: blip2_vicuna_instruct_ori
-  model_type: instruct_vicuna7b
+  arch: blip2_t5_instruct_ori
+  model_type: flant5xl
   load_pretrained: True
   # intialize stage 2 pretraining from stage 1 pretrained model
-  pretrained: "/root/workspace/24s-VQA-MLLM/BEiT3/stage2/VQA-MLLM-stage2/daiv/output/BLIP2/Finetune_stage2/20240806053/checkpoint_9.pth"
+  pretrained: "/root/workspace/24s-VQA-MLLM/BEiT3/stage2/VQA-MLLM-stage2/daiv/output/BLIP2/Finetune_stage2/20240829052/checkpoint_9.pth"
   freeze_vit: True
 
 datasets:
-  ok_vqa:
+  heuristic_vqa:
     vis_processor:
         # train:
         #   name: "blip2_image_train"
@@ -39,9 +39,9 @@ run:
 
   weight_decay: 0.05
   max_epoch: 10
-  batch_size_train: 1
-  batch_size_eval: 1
-  num_workers: 16
+  batch_size_train: 2
+  batch_size_eval: 2
+  num_workers: 8
   warmup_steps: 2000
 
   seed: 42
@@ -57,4 +57,4 @@ run:
   device: "cuda"
   world_size: 1
   dist_url: "env://"
-  distributed: False
+  distributed: True
